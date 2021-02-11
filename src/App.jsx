@@ -39,9 +39,13 @@ function Map() {
             onCloseClick={() => {
                 setSelectedMarker(null)
             }}
+            options={{
+                pane: 'mapPane',
+                pixelOffset: new window.google.maps.Size(0, -25)
+            }}
             >
-                <div style={{width:'180px', overflow:'hidden'}}>
-                    <h2>{getAction(selectedMarker)}</h2>
+                <div style={{width:'180px', overflow:'hidden', marginBottom:'12px'}}>
+                    <h2>{getAction(selectedMarker.action)}</h2>
                     <p>{selectedMarker.sender}</p>
                     <p>{selectedMarker.desc}</p>
                 </div>
