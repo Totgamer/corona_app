@@ -3,7 +3,20 @@ import { GoogleMap, withScriptjs, withGoogleMap, Marker, InfoWindow } from 'reac
 import mapStyles from '../mapStyles';
 import './App.css';
 import * as data from './data/markers.json';
+// import * as firebase from 'firebase';
+import { firebase } from '@firebase/app';
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+    apiKey: "AIzaSyBEdptQ-lMHVGmyjbgEEkjw-G6s00ta0y8",
+    authDomain: "corona-app-5000c.firebaseapp.com",
+    projectId: "corona-app-5000c",
+    storageBucket: "corona-app-5000c.appspot.com",
+    messagingSenderId: "796612055326",
+    appId: "1:796612055326:web:c3d5ff79153cda12db790f",
+    measurementId: "G-ZC9D1J3111"
+  };
 
+firebase.initializeApp(firebaseConfig);
 
 function Map() {
     const [selectedMarker, setSelectedMarker] = useState(null);
@@ -16,7 +29,30 @@ function Map() {
             defaultCenter={{lat:52.076918, lng:5.106366}}
             defaultOptions={{styles: mapStyles}}>
 
-            {data.markers.map(marker =>
+            <FirebaseDatabaseNode path="0/markers/">
+                {data => {
+                    const { value } = data;
+                    if (value === null || typeof value === "undefined") return null;
+                    const values = Object.values(value);
+                    const valuesWithKeys = values.map(
+                    (value) =>
+                        <Marker
+                            key={value.id}
+                            position={{lat:value.lat, lng:value.lng}}
+                            onClick={() => {
+                                setSelectedMarker(value);
+                            }}
+                            icon={{
+                                url: `/dist/svg/${getFilename(value.action)}`,
+                                scaledSize: new window.google.maps.Size(30, 30)
+                            }}
+                        />
+                    );
+                    return <AutoComplete items={valuesWithKeys} />;
+                }}
+                </FirebaseDatabaseNode>
+
+            {/* {data.markers.map(marker =>
            
                 <Marker
                     key={marker.id}
@@ -29,7 +65,7 @@ function Map() {
                         scaledSize: new window.google.maps.Size(30, 30)
                     }}
                 />)
-            }
+            } */}
             {selectedMarker && (
             <InfoWindow
             position= {{
