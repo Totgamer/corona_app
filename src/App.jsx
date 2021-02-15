@@ -29,7 +29,7 @@ function Map() {
             defaultCenter={{lat:52.076918, lng:5.106366}}
             defaultOptions={{styles: mapStyles}}>
 
-            <FirebaseDatabaseNode path="0/markers/">
+            {/* <FirebaseDatabaseNode path="0/markers/">
                 {data => {
                     const { value } = data;
                     if (value === null || typeof value === "undefined") return null;
@@ -50,9 +50,9 @@ function Map() {
                     );
                     return <AutoComplete items={valuesWithKeys} />;
                 }}
-                </FirebaseDatabaseNode>
+                </FirebaseDatabaseNode> */}
 
-            {/* {data.markers.map(marker =>
+            {data.markers.map(marker =>
            
                 <Marker
                     key={marker.id}
@@ -65,7 +65,7 @@ function Map() {
                         scaledSize: new window.google.maps.Size(30, 30)
                     }}
                 />)
-            } */}
+            }
             {selectedMarker && (
             <InfoWindow
             position= {{
