@@ -3,19 +3,23 @@ import { GoogleMap, withScriptjs, withGoogleMap, Marker, InfoWindow } from 'reac
 import mapStyles from '../mapStyles';
 import './App.css';
 
-function Map() {
+let lat = null;
+let lng = null;
 
-    
-    if ("geolocation" in navigator) {
-        // var lat = navigator.geolocation.getCurrentPosition(function(position) { position.coords.latitude  });
-        // var lng = navigator.geolocation.getCurrentPosition(function(position) { position.coords.longitude });
-        var lat = 52.076918;
-        var lng = 5.106366;
-        console.log(lat, lng);
-    } else {
-        var lat = 52.076918;
-        var lng = 5.106366;
-    }
+if ("geolocation" in navigator) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+        // console.log(position.coords.latitude);
+        lat = position.coords.latitude;
+        lng = position.coords.longitude;
+        document.getElementById('lat').value = lat;
+        document.getElementById('lng').value = lng;
+    });
+} else {
+    lat = 52.076918;
+    lng = 5.106366;
+}
+
+function Map() {
     
     let data = {};
 
@@ -84,11 +88,37 @@ function Map() {
  
  export default function App() {
 
+    function closeWindowMarker() {
+        var form = document.getElementsByClassName('upload-f');
+        form[0].classList.add("hidden");
+    }
+
+    function closeWindowUser() {
+        var form = document.getElementsByClassName('upload-f');
+        form[1].classList.add("hidden");
+    }
+
+    function openWindowMarker() {
+        var form = document.getElementsByClassName('upload-f');
+        form[0].classList.remove("hidden");
+    }
+
+    function openWindowUser() {
+        var form = document.getElementsByClassName('upload-f');
+        form[1].classList.remove("hidden");
+    }
+
+    function closeAllWindows() {
+        closeWindowMarker();
+        closeWindowUser();
+    }
+
     return (
         <div style={{width: "100vw", height: "100vh", backgroundColor: "#ffffff"}}>
             <div id="header">
                 <a href="#"><i class="fas fa-bars"></i></a>
-                <img src="img/logo.png"></img>
+               <a href="https://www.youtube.com/watch?v=zzd4ydafGR0"> <img src="img/logo.png"></img>
+               </a>
             </div>
             <div style={{width: "100%", height: "80vh"}}>
                 <WrappedMap 
@@ -99,12 +129,13 @@ function Map() {
                 />
             </div>
             <div id="footer">
-                <a href="#"><i class="fas fa-plus-circle"></i></a>
-                <a href="#"><i class="fas fa-map-marker-alt"></i></a>
-                <a href="#"><i class="fas fa-user"></i></a>
+                <a href="#" onClick={openWindowMarker}><i class="fas fa-plus-circle"></i></a>
+                <a href="#" onClick={closeAllWindows}><i class="fas fa-map-marker-alt"></i></a>
+                <a href="#" onClick={openWindowUser}><i class="fas fa-user"></i></a>
             </div>
-            <form class="upload-f" method="POST" action="post.php">
-                <div id="close">x</div>
+            {/* marker toevoegen */}
+            <form class="upload-f hidden" method="POST" action="post.php">
+                <div id="close" onClick={closeWindowMarker}>x</div>
                 <label for="fname">Naam</label>
                 <input type="text" id="name" name="name"/>
                 <label for="desc">Beschrijving</label>
@@ -117,6 +148,15 @@ function Map() {
                     <option value="3">Hond uitlaten</option>
                     <option value="4">Wandelen</option>
                 </select>
+                <input class="hidden" type="text" id="lat" name="lat"/>
+                <input class="hidden" type="text" id="lng" name="lng"/>
+                <input class="btn-sub" type="submit" name="submit" value="Submit"/>
+            </form>
+            {/* user toevoegen */}
+            <form class="upload-f hidden" method="POST" action="post.php">
+                <div id="close" onClick={closeWindowUser}>x</div>
+                <label for="fname">Voornaam & Achternaam</label>
+                <input type="text" id="fname" name="fname"/>
                 <input class="btn-sub" type="submit" name="submit" value="Submit"/>
             </form>
         </div>
