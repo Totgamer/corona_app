@@ -47,7 +47,9 @@
         } else {
             echo "
                 <script>
-                    
+                function keinenaam() {
+                    alert('voer eerst u gebruikers naam toe');
+                  }
                 </script>
             ";
         }

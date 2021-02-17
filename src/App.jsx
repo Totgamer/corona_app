@@ -117,7 +117,7 @@ function Map() {
         <div style={{width: "100vw", height: "100vh", backgroundColor: "#ffffff"}}>
             <div id="header">
                 <a href="#"><i class="fas fa-bars"></i></a>
-               <a href="https://www.youtube.com/watch?v=zzd4ydafGR0"> <img src="img/logo.png"></img>
+               <a href="http://localhost/school/project_p7/maps-corona/dist/"> <img src="img/logo.png"></img>
                </a>
             </div>
             <div style={{width: "100%", height: "80vh"}}>
